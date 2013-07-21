@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import us.havanki.tamal.TheRandom;
+import us.havanki.tamal.entity.AlchemyTable;
+import us.havanki.tamal.entity.Chest;
 import us.havanki.tamal.entity.Furnace;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
@@ -87,6 +89,12 @@ public class Demo2 extends Canvas {
         Furnace furnace = new Furnace();
         furnace.place(136, 28);
         level.add(furnace);
+        Chest chest = new Chest();
+        chest.place(136, 44);
+        level.add(chest);
+        AlchemyTable alchemyTable = new AlchemyTable();
+        alchemyTable.place(136, 60);
+        level.add(alchemyTable);
 
         // ---
 
