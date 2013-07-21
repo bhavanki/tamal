@@ -28,9 +28,20 @@ public abstract class Entity {
      */
     private boolean removed;
 
+    /**
+     * Creates a new entity with default radius at the top left of a level.
+     */
     protected Entity() {
         x = 0; y = 0;
     }
+    /**
+     * Creates a new entity.
+     *
+     * @param x x coordinate of entity
+     * @param y y coordinate of entity
+     * @param xr x radius of entity
+     * @param yr y radius of entity
+     */
     protected Entity (int x, int y, int xr, int yr) {
         this.x = x; this.y = y;
         this.xr = xr; this.yr = yr;
