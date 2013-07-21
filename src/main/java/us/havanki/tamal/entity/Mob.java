@@ -10,17 +10,25 @@ public abstract class Mob extends Entity {
     private Direction dir;
 
     /**
-     * Creates a new entity.
+     * Creates a new mob.
      */
-    public Mob() {
-	this (8, 8, 4, 3);  // ?
-	dir = Direction.DOWN;
+    protected Mob() {
+        this(8, 8, 4, 3, Direction.DOWN);
     }
-    protected Mob (int x, int y, int xr, int yr) {
-	super (x, y, xr, yr);
-	xKnockback = 0;
-	yKnockback = 0;
-	walkDist = 0L;
+    /**
+     * Creates a new mob.
+     *
+     * @param x x coordinate of entity
+     * @param y y coordinate of entity
+     * @param xr x radius of entity
+     * @param yr y radius of entity
+     * @param dir initial direction
+     */
+    protected Mob (int x, int y, int xr, int yr, Direction dir) {
+        super (x, y, xr, yr);
+        this.dir = dir;
+        xKnockback = yKnockback = 0;
+        walkDist = 0L;
     }
 
     /**
@@ -63,37 +71,40 @@ public abstract class Mob extends Entity {
     public Direction getDirection() { return dir; }
 
     @Override
-	public boolean move (int xa, int ya) {
-	// Move the entity acoording to its knockback.
-	if (xKnockback < 0) {
-	    move2 (-1, 0);
-	    xKnockback++;
-	} else if (xKnockback > 0) {
-	    move2 (1, 0);
-	    xKnockback--;
-	} else if (yKnockback < 0) {
-	    move2 (0, -1);
-	    yKnockback++;
-	} else if (yKnockback > 0) {
-	    move2 (0, 1);
-	    yKnockback--;
-	}
+    public void tick() {}  // was for health management
 
-	// Increase the walk distance and update direction.
-	if (xa != 0 || ya != 0) {
-	    walkDist++;
-	    if (xa < 0) { dir = Direction.LEFT; }
-	    else if (xa > 0) { dir = Direction.RIGHT; }
-	    if (ya < 0) { dir = Direction.UP; }
-	    else if (ya > 0) { dir = Direction.DOWN; }
-	}
+    @Override
+    public boolean move (int xa, int ya) {
+        // First, move the mob acoording to its knockback.
+        if (xKnockback < 0) {
+            move2 (-1, 0);
+            xKnockback++;
+        } else if (xKnockback > 0) {
+            move2 (1, 0);
+            xKnockback--;
+        } else if (yKnockback < 0) {
+            move2 (0, -1);
+            yKnockback++;
+        } else if (yKnockback > 0) {
+            move2 (0, 1);
+            yKnockback--;
+        }
 
-	// OK, now you can move.
-	return super.move (xa, ya);
+        // Increase the walk distance and update direction.
+        if (xa != 0 || ya != 0) {
+            walkDist++;
+            if (xa < 0) { dir = Direction.LEFT; }
+            else if (xa > 0) { dir = Direction.RIGHT; }
+            if (ya < 0) { dir = Direction.UP; }
+            else if (ya > 0) { dir = Direction.DOWN; }
+        }
+
+        // OK, now you can move.
+        return super.move (xa, ya);
     }
 
     @Override
-	public boolean blocks (Entity e) {
-	return e.isBlockableBy (this);
+    public boolean blocks (Entity e) {
+        return e.isBlockableBy (this);
     }
 }

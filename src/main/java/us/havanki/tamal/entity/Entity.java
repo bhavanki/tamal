@@ -251,6 +251,12 @@ public abstract class Entity {
         return false;
     }
 
-    // ?
-    public boolean use (Player player, int attackDir) { return false; }
+    /**
+     * Signals that this entity is being used.
+     *
+     * @param player player using the entity
+     * @param dir direction player is facing
+     * @return whether the entity was (may be) used
+     */
+    public boolean use (Player player, Direction dir) { return false; }
 }

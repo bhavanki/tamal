@@ -16,6 +16,7 @@ import us.havanki.tamal.TheRandom;
 import us.havanki.tamal.entity.AlchemyTable;
 import us.havanki.tamal.entity.Chest;
 import us.havanki.tamal.entity.Furnace;
+import us.havanki.tamal.entity.Player;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
 import us.havanki.tamal.level.tile.Tiles;
@@ -95,6 +96,9 @@ public class Demo2 extends Canvas {
         AlchemyTable alchemyTable = new AlchemyTable();
         alchemyTable.place(136, 60);
         level.add(alchemyTable);
+        Player bob = new Player(null, null);
+        bob.place(136, 100);
+        level.add(bob);
 
         // ---
 
