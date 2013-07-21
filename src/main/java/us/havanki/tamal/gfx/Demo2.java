@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import us.havanki.tamal.TheRandom;
+import us.havanki.tamal.entity.Furnace;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
 import us.havanki.tamal.level.tile.Tiles;
@@ -82,6 +83,11 @@ public class Demo2 extends Canvas {
         Arrays.fill(data, (byte) 0);
         Level level = new Level(lw, lh, ld, tiles, data);
 
+        // Make Demo3 for this part eventually...
+        Furnace furnace = new Furnace();
+        furnace.place(136, 28);
+        level.add(furnace);
+
         // ---
 
         long lastTime = System.nanoTime();
@@ -115,6 +121,7 @@ public class Demo2 extends Canvas {
                 frames++;
 
                 level.renderBackground(screen, 0, 0);
+                level.renderSprites(screen, 0, 0);
 
                 for (int y = 0; y < screen.h(); y++) {
                     for (int x = 0; x < screen.w(); x++) {

@@ -28,6 +28,11 @@ public class EntityTest {
         assertEquals(6, e.xr());
         assertEquals(8, e.yr());
     }
+    @Test public void testPlace() {
+        e.place(20, 40);
+        assertEquals(20, e.x());
+        assertEquals(40, e.y());
+    }
     @Test public void testAddedToLevel() {
         Level l = createMock(Level.class);
         e.addedToLevel(l);

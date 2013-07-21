@@ -60,6 +60,15 @@ public abstract class Entity {
      */
     public int y() { return y; }
     /**
+     * Places this entity at the given coordinates.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    public void place(int x, int y) {
+        this.x = x; this.y = y;
+    }
+    /**
      * Gets this entity's x radius.
      *
      * @return x radius

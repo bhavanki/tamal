@@ -15,4 +15,7 @@ public final class SimpleColors {
     public static final SimpleColor WHITE = SimpleColor.fromHexal(555);
     public static final SimpleColor BLACK = SimpleColor.fromHexal(0);
     public static final SimpleColor TRANSPARENT = SimpleColor.fromHexal(-1);
+
+    public static final SimpleColor DOVE_GRAY = SimpleColor.fromHexal(222);
+    public static final SimpleColor GRAY = SimpleColor.fromHexal(333);
 }
