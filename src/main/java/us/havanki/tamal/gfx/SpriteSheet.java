@@ -63,15 +63,15 @@ public class SpriteSheet {
     /**
      * Gets the width of the sprite sheet in sprites.
      *
-     * @return sprite width (number of sprites across sheet)
+     * @return number of sprites across sheet
      */
-    public int getSpriteWidth() { return w / SPRITE_SIZE; }
+    public int getWidthInSprites() { return w / SPRITE_SIZE; }
     /**
      * Gets the height of the sprite sheet in sprites.
      *
-     * @return sprite height (number of sprites down sheet)
+     * @return number of sprites down sheet
      */
-    public int getSpriteHeight() { return h / SPRITE_SIZE; }
+    public int getHeightInSprites() { return h / SPRITE_SIZE; }
 
     /**
      * Gets the sprite offset for a sprite at the given position in the sheet.

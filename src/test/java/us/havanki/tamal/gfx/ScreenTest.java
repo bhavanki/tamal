@@ -54,7 +54,7 @@ public class ScreenTest {
                            SimpleColors.BLUE, SimpleColors.WHITE);
 
     private void mockSprite() {
-        expect(ss.getSpriteWidth()).andReturn(4);
+        expect(ss.getWidthInSprites()).andReturn(4);
         expectLastCall().anyTimes();
         expect(ss.getSpriteOffset(2, 1)).andReturn(272);  // whatever
 

@@ -165,19 +165,19 @@ public class Player extends Mob {
         int yo = y() - 11;  // ?
 
         // Render the top two sprites of the player.
-        int tlSpriteNumber = xs + (ys * sheet.getSpriteWidth());
+        int tlSpriteNumber = xs + (ys * sheet.getWidthInSprites());
         int tlXs = (halfstep == 1) ? xo + SpriteSheet.SPRITE_SIZE: xo;
         screen.render (tlXs, yo, tlSpriteNumber, PLAYER_COLORS, bitMaskTop);
         int trXs = (halfstep == 1) ? xo : xo + SpriteSheet.SPRITE_SIZE;
-        int trSpriteNumber = (xs + 1) + (ys * sheet.getSpriteWidth());
+        int trSpriteNumber = (xs + 1) + (ys * sheet.getWidthInSprites());
         screen.render (trXs, yo, trSpriteNumber, PLAYER_COLORS, bitMaskTop);
 
         // Render the bottom two sprites of the player.
-        int blSpriteNumber = xs + ((ys + 1) * sheet.getSpriteWidth());
+        int blSpriteNumber = xs + ((ys + 1) * sheet.getWidthInSprites());
         int blXs = (fullstep == 1) ? xo + SpriteSheet.SPRITE_SIZE: xo;
         screen.render (blXs, yo + SpriteSheet.SPRITE_SIZE,
                        blSpriteNumber, PLAYER_COLORS, bitMaskBottom);
-        int brSpriteNumber = (xs + 1) + ((ys + 1) * sheet.getSpriteWidth());
+        int brSpriteNumber = (xs + 1) + ((ys + 1) * sheet.getWidthInSprites());
         int brXs = (fullstep == 1) ? xo : xo + SpriteSheet.SPRITE_SIZE;
         screen.render (brXs, yo + SpriteSheet.SPRITE_SIZE,
                        blSpriteNumber, PLAYER_COLORS, bitMaskBottom);

@@ -40,8 +40,8 @@ public class SpriteSheetTest {
         assertEquals(64, ss.w());
         assertEquals(128, ss.h());
 
-        assertEquals(64 / SpriteSheet.SPRITE_SIZE, ss.getSpriteWidth());
-        assertEquals(128 / SpriteSheet.SPRITE_SIZE, ss.getSpriteHeight());
+        assertEquals(64 / SpriteSheet.SPRITE_SIZE, ss.getWidthInSprites());
+        assertEquals(128 / SpriteSheet.SPRITE_SIZE, ss.getHeightInSprites());
     }
     @Test public void testSpriteOffset() {
         assertEquals(0, ss.getSpriteOffset(0, 0));

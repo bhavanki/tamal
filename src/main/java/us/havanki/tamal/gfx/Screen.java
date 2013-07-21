@@ -121,13 +121,8 @@ public class Screen {
         boolean mirrorX = (bits & MIRROR_X) > 0;
         boolean mirrorY = (bits & MIRROR_Y) > 0;
 
-        // Get the sprite offset based on the sprite number. Each minimum
-        // sprite in the sheet (a block of size SPRITE_SIZE) has a number. The
-        // first row is numbered 0 through the sheet's sprite width - 1, the
-        // second row is numbered sw to 2 * sw - 1, and so on.
-        int xsp = sprite % sheet.getSpriteWidth();
-        int ysp = sprite / sheet.getSpriteWidth();
-        int so = sheet.getSpriteOffset (xsp, ysp);
+        // Get the sprite offset based on the sprite number.
+        int so = new SpriteNumber(sprite, sheet).getOffset();
 
         // Write each sprite pixel's color into the screen.
         for (int y = 0; y < SpriteSheet.SPRITE_SIZE; y++) {

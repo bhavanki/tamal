@@ -8,14 +8,14 @@ import us.havanki.tamal.entity.Entity;
  */
 public class LevelEntityLookup {
 
-    private int w, h;
+    private final int w, h;
     private List<List<Entity>> els;
 
     /**
      * Creates a new entity lookup.
      *
-     * @param w width of level
-     * @param h height of level
+     * @param w width of level (in tiles)
+     * @param h height of level (in tiles)
      */
     public LevelEntityLookup (int w, int h) {
         this.w = w;
