@@ -12,6 +12,7 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import us.havanki.tamal.InputHandler;
 import us.havanki.tamal.TheRandom;
 import us.havanki.tamal.entity.AlchemyTable;
 import us.havanki.tamal.entity.Chest;
@@ -31,6 +32,7 @@ public class Demo2 extends Canvas {
         new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT,
                           BufferedImage.TYPE_INT_RGB);
     int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+    InputHandler input;
 
     private static int tickCount = 0;
 
@@ -61,6 +63,8 @@ public class Demo2 extends Canvas {
             demo.requestFocus();
             bs = demo.getBufferStrategy();
         }
+
+        demo.input = new InputHandler(demo);
 
         System.out.println("Constructing level");
         int lw = 20; int lh = 16; int ld = 0;
@@ -96,7 +100,7 @@ public class Demo2 extends Canvas {
         AlchemyTable alchemyTable = new AlchemyTable();
         alchemyTable.place(136, 60);
         level.add(alchemyTable);
-        Player bob = new Player(null, null);
+        Player bob = new Player(null, demo.input);
         bob.place(136, 100);
         level.add(bob);
 
@@ -117,7 +121,7 @@ public class Demo2 extends Canvas {
             // boolean shouldRender = true;
             while (unprocessedTicks >= 1.0) {
                 ticks++;
-                tick(level);
+                tick(demo, level);
                 unprocessedTicks -= 1.0;
                 // shouldRender = true;
             }
@@ -166,8 +170,13 @@ public class Demo2 extends Canvas {
         }
     }
 
-    public static void tick(Level level) {
+    public static void tick(Demo2 demo2, Level level) {
         tickCount++;
+        if (!demo2.hasFocus()) {
+            demo2.input.releaseAll();
+            return;
+        }
+        demo2.input.tick();
         level.tick();
         Tile.incrementTickCount();
     }

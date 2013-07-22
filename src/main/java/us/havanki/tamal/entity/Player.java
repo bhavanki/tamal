@@ -1,5 +1,6 @@
 package us.havanki.tamal.entity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import us.havanki.tamal.Game;
@@ -162,21 +163,22 @@ public class Player extends Mob {
         // - heading left and right, a step is 16 pixels.
         int halfstep = (int) ((getWalkDistance() >> 3) & 1);  // 0 or 1
         int fullstep = halfstep;  // to start with
-        int bitMaskTop = 0;  // for the top half of the player sprite
-        int bitMaskBottom = 0;  // for the bottom half of the player sprite
 
         // Pick a set of sprites.
         int[] scoords = PLAYER_SPRITES.get(getDirection());
+        scoords = Arrays.copyOf(scoords, scoords.length);
         if (getDirection() == Direction.LEFT ||
             getDirection() == Direction.RIGHT) {
             // select striding sprite on half steps
             // assumes player is 2 sprites wide, stride sprite is next door
-            scoords[1] += (2 * halfstep);
+            scoords[0] += (2 * halfstep);
         }
         int xs = scoords[0];
         int ys = scoords[1];
 
         // Figure out the bitMasks, whether to flip things.
+        int bitMaskTop = 0;  // for the top half of the player sprite
+        int bitMaskBottom = 0;  // for the bottom half of the player sprite
         switch (getDirection()) {
         case DOWN:
         case UP:
@@ -213,10 +215,24 @@ public class Player extends Mob {
 
         // Render the top two sprites of the player.
         int tlSpriteNumber = xs + (ys * sheet.getWidthInSprites());
-        int tlXs = (halfstep == 1) ? xo + SpriteSheet.SPRITE_SIZE: xo;
-        screen.render (tlXs, yo, tlSpriteNumber, PLAYER_COLORS, bitMaskTop);
-        int trXs = (halfstep == 1) ? xo : xo + SpriteSheet.SPRITE_SIZE;
         int trSpriteNumber = (xs + 1) + (ys * sheet.getWidthInSprites());
+        int tlXs = 0, trXs = 0;
+        switch (getDirection()) {
+            case DOWN:
+            case UP:
+                tlXs = (halfstep == 1) ? xo + SpriteSheet.SPRITE_SIZE: xo;
+                trXs = (halfstep == 1) ? xo : xo + SpriteSheet.SPRITE_SIZE;
+                break;
+            case LEFT:
+                tlXs = xo + SpriteSheet.SPRITE_SIZE;
+                trXs = xo;
+                break;
+            case RIGHT:
+                tlXs = xo;
+                trXs = xo + SpriteSheet.SPRITE_SIZE;
+                break;
+        }
+        screen.render (tlXs, yo, tlSpriteNumber, PLAYER_COLORS, bitMaskTop);
         screen.render (trXs, yo, trSpriteNumber, PLAYER_COLORS, bitMaskTop);
 
         // Render the bottom two sprites of the player.

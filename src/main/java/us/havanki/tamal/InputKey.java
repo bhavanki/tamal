@@ -22,7 +22,8 @@ public enum InputKey {
      */
     public void setDown (boolean down) { this.down = down; }
     /**
-     * Gets whether the key has been clicked.
+     * Gets whether the key has been clicked. A click occurs when a key is
+     * initially pressed down.
      *
      * @return true if key is clicked
      */
@@ -31,27 +32,34 @@ public enum InputKey {
     /**
      * Changes the key state.
      *
-     * @param pressed whether the key is pressed (or not)
+     * @param true if the key was just pressed, false if released
      */
     public void toggle (boolean pressed) {
-	down = pressed;
-	if (pressed) {
-	    presses++;
-	}
+        down = pressed;
+        if (pressed) {
+            presses++;
+        }
+    }
+    /**
+     * Resets the key's internal state. Useful for testing.
+     */
+    final void reset() {
+        absorbs = presses = 0;
+        down = clicked = false;
     }
 
     /**
      * Signals to this key that a tick of game time has passed. This method
      * is used to determine when a button has been "clicked". A button click
-     * happens when the key has been pressed down, and then is let up.
+     * happens on the first tick after a key has been pressed down.
      */
     public void tick() {
-	if (absorbs < presses) {
-	    absorbs++;
-	    clicked = true;
-	} else {
-	    clicked = false;
-	}
+        if (absorbs < presses) {
+            absorbs++;
+            clicked = true;
+        } else {
+            clicked = false;
+        }
     }
 }
 
