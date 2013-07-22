@@ -1,5 +1,6 @@
 package us.havanki.tamal.entity;
 
+import java.util.List;
 import us.havanki.tamal.gfx.Screen;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
@@ -86,49 +87,79 @@ public class EntityTest {
         e.move2(2, 4);
     }
     @Test public void testMove2_X_NoBlocking() {
-        testMove2_X(false);
+        testMove2_X(false, false);
     }
-    @Test public void testMove2_X_Blocking() {
-        testMove2_X(true);
+    @Test public void testMove2_X_BlockingTile() {
+        testMove2_X(true, false);
     }
-    private void testMove2_X(boolean blocking) {
+    @Test public void testMove2_X_BlockingEntity() {
+        testMove2_X(false, true);
+    }
+    private void testMove2_X(boolean blockingTile, boolean blockingEntity) {
         Level l = createMock(Level.class);
         e.addedToLevel(l);
         Tile t = createMock(Tile.class);
         expect(l.getTile(anyInt(), anyInt())).andReturn(t);
         expectLastCall().anyTimes();
+        Entity here = createMock(Entity.class);
+        List<Entity> hereEntities = new java.util.ArrayList<Entity>();
+        hereEntities.add(here);
+        Entity there = createMock(Entity.class);
+        List<Entity> thereEntities = new java.util.ArrayList<Entity>();
+        thereEntities.add(there); thereEntities.add(e);
+        expect(l.getEntitiesInRect(4, 12, 16, 28)).andReturn(hereEntities);
+        expect(l.getEntitiesInRect(52, 12, 64, 28)).andReturn(thereEntities);
         replay(l);
-        expect(t.mayPass(anyObject(TilePos.class), eq(e))).andReturn(!blocking);
+        expect(t.mayPass(anyObject(TilePos.class), eq(e))).andReturn(!blockingTile);
         expectLastCall().anyTimes();
         replay(t);
+        there.touchedBy(e);
+        expect(there.blocks(e)).andReturn(blockingEntity);
+        replay(there);
         int oldx = e.x();
         int oldy = e.y();
-        assertEquals(!blocking, e.move2(48, 0));  // 3 tiles right
-        if (!blocking) {
+        assertEquals(!blockingTile && !blockingEntity,
+                     e.move2(48, 0));  // 3 tiles right
+        if (!blockingTile && !blockingEntity) {
             assertEquals(oldx + 48, e.x());
             assertEquals(oldy, e.y());
         }
     }
     @Test public void testMove2_Y_NoBlocking() {
-        testMove2_Y(false);
+        testMove2_Y(false, false);
     }
-    @Test public void testMove2_Y_Blocking() {
-        testMove2_Y(true);
+    @Test public void testMove2_Y_BlockingTile() {
+        testMove2_Y(true, false);
     }
-    private void testMove2_Y(boolean blocking) {
+    @Test public void testMove2_Y_BlockingEntity() {
+        testMove2_Y(false, true);
+    }
+    private void testMove2_Y(boolean blockingTile, boolean blockingEntity) {
         Level l = createMock(Level.class);
         e.addedToLevel(l);
         Tile t = createMock(Tile.class);
         expect(l.getTile(anyInt(), anyInt())).andReturn(t);
         expectLastCall().anyTimes();
+        Entity here = createMock(Entity.class);
+        List<Entity> hereEntities = new java.util.ArrayList<Entity>();
+        hereEntities.add(here);
+        Entity there = createMock(Entity.class);
+        List<Entity> thereEntities = new java.util.ArrayList<Entity>();
+        thereEntities.add(there); thereEntities.add(e);
+        expect(l.getEntitiesInRect(4, 12, 16, 28)).andReturn(hereEntities);
+        expect(l.getEntitiesInRect(4, 60, 16, 76)).andReturn(thereEntities);
         replay(l);
-        expect(t.mayPass(anyObject(TilePos.class), eq(e))).andReturn(!blocking);
+        expect(t.mayPass(anyObject(TilePos.class), eq(e))).andReturn(!blockingTile);
         expectLastCall().anyTimes();
         replay(t);
+        there.touchedBy(e);
+        expect(there.blocks(e)).andReturn(blockingEntity);
+        replay(there);
         int oldx = e.x();
         int oldy = e.y();
-        assertEquals(!blocking, e.move2(0, 48));  // 3 tiles down
-        if (!blocking) {
+        assertEquals(!blockingTile && !blockingEntity,
+                     e.move2(0, 48));  // 3 tiles down
+        if (!blockingTile && !blockingEntity) {
             assertEquals(oldx, e.x());
             assertEquals(oldy + 48, e.y());
         }

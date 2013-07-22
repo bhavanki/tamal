@@ -1,5 +1,6 @@
 package us.havanki.tamal.entity;
 
+import java.util.List;
 import us.havanki.tamal.gfx.Screen;
 import us.havanki.tamal.item.Item;
 import us.havanki.tamal.level.Level;
@@ -217,7 +218,23 @@ public abstract class Entity {
             }
         }
 
-        // tbd inside entities check
+        // Now check if any entities will block the movement. While checking,
+        // touch any entities at the destination. The entities are touched
+        // whether or not anything blocks the moving entity.
+        List<Entity> entitiesHere =
+            level.getEntitiesInRect(x - xr, y - yr, x + xr, y + yr);
+        List<Entity> entitiesThere =
+            level.getEntitiesInRect((x + xa) - xr, (y + ya) - yr,
+                                    (x + xa) + xr, (y + ya) + yr);
+        for (Entity entityThere : entitiesThere) {
+            if (entityThere == this) { continue; }
+            entityThere.touchedBy(this);
+        }
+        entitiesThere.removeAll(entitiesHere);  // only these may block
+        for (Entity entityThere : entitiesThere) {
+            if (entityThere == this) { continue; }
+            if (entityThere.blocks(this)) { return false; }
+        }
 
         // The move is OK! Update the entity position.
         x += xa; y += ya;
