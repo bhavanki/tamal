@@ -4,7 +4,7 @@ package us.havanki.tamal;
  * A logical input key.
  */
 public enum InputKey {
-    UP, DOWN, LEFT, RIGHT, ATTACK, MENU;
+    UP, DOWN, LEFT, RIGHT, ATTACK, MENU, QUIT;
 
     private int presses, absorbs;
     private boolean down, clicked;

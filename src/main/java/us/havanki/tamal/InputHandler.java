@@ -85,6 +85,8 @@ public class InputHandler implements KeyListener {
         case KeyEvent.VK_INSERT:
         case KeyEvent.VK_C:
             key = InputKey.ATTACK; break;
+        case KeyEvent.VK_ESCAPE:
+            key = InputKey.QUIT; break;
         }
 
         if (key == null) {

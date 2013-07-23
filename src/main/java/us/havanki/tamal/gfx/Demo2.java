@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import us.havanki.tamal.InputHandler;
+import us.havanki.tamal.InputKey;
 import us.havanki.tamal.TheRandom;
 import us.havanki.tamal.entity.AlchemyTable;
 import us.havanki.tamal.entity.Chest;
@@ -26,6 +27,8 @@ public class Demo2 extends Canvas {
     private static final String SPRITE_SHEET_FILE = "/icons.png";
     private static final int SCREEN_WIDTH = 320;  // 20 tiles wide
     private static final int SCREEN_HEIGHT = 256;  // 16 tiles high
+    // private static final int SCREEN_WIDTH = 160;
+    // private static final int SCREEN_HEIGHT = 128;
     private static final int SCALE = 3;
 
     BufferedImage image =
@@ -114,14 +117,15 @@ public class Demo2 extends Canvas {
 
         long perfTime = System.currentTimeMillis();
 
-        while (true) {
+        boolean quitting = false;
+        while (!quitting) {
             long now = System.nanoTime();
             unprocessedTicks += (now - lastTime) / nsPerTick;
             lastTime = now;
             // boolean shouldRender = true;
             while (unprocessedTicks >= 1.0) {
                 ticks++;
-                tick(demo, level);
+                quitting = tick(demo, level) || quitting;
                 unprocessedTicks -= 1.0;
                 // shouldRender = true;
             }
@@ -136,8 +140,25 @@ public class Demo2 extends Canvas {
             if (true) {
                 frames++;
 
-                level.renderBackground(screen, 0, 0);
-                level.renderSprites(screen, 0, 0);
+                // Determine which part of the screen should be rendered
+                // (scrolling support). The player should be centered, i.e.,
+                // the top-left corner of the rendered screen should be one
+                // half screen to the left and up from the player.
+                int xScroll = bob.x() - SCREEN_WIDTH / 2;
+                if (xScroll < 0) {
+                    xScroll = 0;
+                } else if (xScroll > level.w() * Tile.TILE_SIZE - SCREEN_WIDTH) {
+                    xScroll = level.w() * Tile.TILE_SIZE - SCREEN_WIDTH;
+                }
+                int yScroll = bob.y() - SCREEN_HEIGHT / 2;
+                if (yScroll < 0) {
+                    yScroll = 0;
+                } else if (yScroll > level.h() * Tile.TILE_SIZE - SCREEN_HEIGHT) {
+                    yScroll = level.h() * Tile.TILE_SIZE - SCREEN_HEIGHT;
+                }
+
+                level.renderBackground(screen, xScroll, yScroll);
+                level.renderSprites(screen, xScroll, yScroll);
 
                 for (int y = 0; y < screen.h(); y++) {
                     for (int x = 0; x < screen.w(); x++) {
@@ -168,16 +189,19 @@ public class Demo2 extends Canvas {
                 ticks = 0;
             }
         }
+
+        f.dispose();
     }
 
-    public static void tick(Demo2 demo2, Level level) {
+    public static boolean tick(Demo2 demo2, Level level) {
         tickCount++;
         if (!demo2.hasFocus()) {
             demo2.input.releaseAll();
-            return;
+            return false;
         }
         demo2.input.tick();
         level.tick();
         Tile.incrementTickCount();
+        return InputKey.QUIT.isClicked();
     }
 }
