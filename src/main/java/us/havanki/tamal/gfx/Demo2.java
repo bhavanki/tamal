@@ -19,6 +19,7 @@ import us.havanki.tamal.entity.AlchemyTable;
 import us.havanki.tamal.entity.Chest;
 import us.havanki.tamal.entity.Furnace;
 import us.havanki.tamal.entity.Player;
+import us.havanki.tamal.entity.Slime;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
 import us.havanki.tamal.level.tile.Tiles;
@@ -106,6 +107,9 @@ public class Demo2 extends Canvas {
         Player bob = new Player(null, demo.input);
         bob.place(136, 100);
         level.add(bob);
+        Slime slimer = new Slime();
+        slimer.place(136, 140);
+        level.add(slimer);
 
         // ---
 
