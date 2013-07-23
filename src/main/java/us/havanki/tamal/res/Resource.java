@@ -23,7 +23,7 @@ public class Resource {
      * @param colors sprite colors
      * @throws IllegalArgumentException if name is more than six characters
      */
-    public Resource (String name, int sprite, SimpleColorSet colors) {
+    Resource (String name, int sprite, SimpleColorSet colors) {
         if (name.length() > 6) {
             throw new IllegalArgumentException ("Name " + name +
                                                 " is too long");
@@ -58,4 +58,17 @@ public class Resource {
         return false;
     }
 
+    @Override public boolean equals(Object other) {
+        if (this == other) { return true; }
+        if (!(other instanceof Resource)) { return false; }
+        Resource o = (Resource) other;
+        if (!(name.equals(o.name))) { return false; }
+        return true;
+    }
+    @Override public int hashCode() {
+        int c = 17;
+        c = 37 * c + name.hashCode();
+        return c;
+    }
+    @Override public String toString() { return name; }
 }
