@@ -3,6 +3,7 @@ package us.havanki.tamal.level;
 import java.util.List;
 import java.util.Set;
 import us.havanki.tamal.entity.Entity;
+import us.havanki.tamal.entity.Player;
 import us.havanki.tamal.level.tile.TestTile;
 import us.havanki.tamal.level.tile.Tile;
 import us.havanki.tamal.level.tile.TilePos;
@@ -42,6 +43,7 @@ public class LevelTest {
         assertEquals(DEPTH, level.depth());
         assertNotNull(level.env());
         assertNotNull(level.entityLookup());
+        assertNull(level.getPlayer());
     }
 
     @Test public void testGetTile() {
@@ -102,9 +104,23 @@ public class LevelTest {
         level.add(e);
         verify(e);
 
+        assertNull(level.getPlayer());
         List<Entity> l = level.entityLookup().getEntitiesInTile(2, 1);
         assertEquals(1, l.size());
         assertEquals(e, l.get(0));
+    }
+    @Test public void testAddPlayer() {
+        Player p = createMock(Player.class);
+        expect(p.setRemoved(false)).andReturn(p);
+        p.addedToLevel(level);
+        expect(p.x()).andReturn(33);  // => 2
+        expect(p.y()).andReturn(17);  // => 1
+        replay(p);
+
+        level.add(p);
+        verify(p);
+
+        assertEquals(p, level.getPlayer());
     }
     @Test public void testRemove() {
         Entity e = createMock(Entity.class);
@@ -123,6 +139,23 @@ public class LevelTest {
 
         List<Entity> l = level.entityLookup().getEntitiesInTile(2, 1);
         assertEquals(0, l.size());
+    }
+    @Test public void testRemovePlayer() {
+        Player p = createMock(Player.class);
+        expect(p.setRemoved(false)).andReturn(p);
+        p.addedToLevel(level);
+        expect(p.x()).andReturn(33);  // => 2
+        expectLastCall().times(2);
+        expect(p.y()).andReturn(17);  // => 1
+        expectLastCall().times(2);
+        expect(p.remove()).andReturn(p);
+        replay(p);
+
+        level.add(p);
+        level.remove(p);
+        verify(p);
+
+        assertNull(level.getPlayer());
     }
 
     // ---

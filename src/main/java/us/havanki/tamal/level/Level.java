@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import us.havanki.tamal.entity.Entity;
+import us.havanki.tamal.entity.Player;
 import us.havanki.tamal.gfx.Screen;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
@@ -28,6 +29,8 @@ public class Level {
     private final byte[] data;
     private final LevelEnvironment env;
     private final LevelEntityLookup entityLookup;
+
+    private Player player;
 
     /**
      * Creates a new level.
@@ -92,6 +95,10 @@ public class Level {
      * @return entity lookup
      */
     public LevelEntityLookup entityLookup() { return entityLookup; }
+    /**
+     * Gets the player, if she is in this level.
+     */
+    public Player getPlayer() { return player; }
 
     /**
      * Renders the tiles in this level.
@@ -246,7 +253,9 @@ public class Level {
      * @return this
      */
     public Level add (Entity e) {
-        // tbd notice player
+        if (e instanceof Player) {
+            player = (Player) e;
+        }
         e.setRemoved (false);
         e.addedToLevel (this);  // was init
         entityLookup.insert (e.x() >> 4, e.y() >> 4, e);
@@ -259,6 +268,9 @@ public class Level {
      * @return this
      */
     public Level remove (Entity e) {
+        if (e instanceof Player) {
+            player = null;
+        }
         e.remove();  // added this
         entityLookup.remove(e.x() >> 4, e.y() >> 4, e);
         return this;
