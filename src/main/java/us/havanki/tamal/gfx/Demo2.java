@@ -18,11 +18,15 @@ import us.havanki.tamal.TheRandom;
 import us.havanki.tamal.entity.AlchemyTable;
 import us.havanki.tamal.entity.Chest;
 import us.havanki.tamal.entity.Furnace;
+import us.havanki.tamal.entity.ItemEntity;
 import us.havanki.tamal.entity.Player;
 import us.havanki.tamal.entity.Slime;
+import us.havanki.tamal.entity.TempItemEntity;
+import us.havanki.tamal.item.ResourceItem;
 import us.havanki.tamal.level.Level;
 import us.havanki.tamal.level.tile.Tile;
 import us.havanki.tamal.level.tile.Tiles;
+import us.havanki.tamal.res.Resources;
 
 public class Demo2 extends Canvas {
     private static final String SPRITE_SHEET_FILE = "/icons.png";
@@ -110,6 +114,12 @@ public class Demo2 extends Canvas {
         Slime slimer = new Slime();
         slimer.place(136, 140);
         level.add(slimer);
+        ItemEntity blflr = new ItemEntity(new ResourceItem(Resources.BLUE_FLOWER));
+        blflr.place(136, 180);
+        level.add(blflr);
+        TempItemEntity puflr = new TempItemEntity(new ResourceItem(Resources.PURPLE_FLOWER));
+        puflr.place(152, 180);
+        level.add(puflr);
 
         // ---
 
